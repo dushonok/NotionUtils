@@ -2,6 +2,9 @@
 def report_progress(i, url_count, callback):
     callback(f"Processed {i+1}/{url_count}")
 
+def reset_report_progress(url_count, callback):
+    report_progress(-1, url_count, callback)
+
 def dedup_and_trim(arr, callback=print):
     seen = set()
     result = []
