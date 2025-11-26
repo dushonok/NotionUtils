@@ -47,7 +47,7 @@ def get_expanded_template_colors(season_id, website_id, total_pins, callback=pri
     template_colors = get_template_colors(website_id, season_id)
     if not template_colors:
         raise ValueError("No template colors found for the specified website and season.")
-    callback(f"[INFO] Found {len(template_colors)} template colors")
+    callback(f"[INFO][get_expanded_template_colors] Found {len(template_colors)} template colors")
     expanded_template_colors = expand_and_shuffle(template_colors, total_pins)
     
     return expanded_template_colors
