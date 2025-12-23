@@ -4,6 +4,7 @@ import sys
 # Add parent directories to path for imports
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'ConfigKeeper')))
 
+from notion_config import NOTION_BLOCK_TOGGLE
 from notion_api import (
     get_post_title_website_from_url,
     get_page_property,
@@ -75,7 +76,7 @@ class NotionRecipeParser:
         for idx, element in enumerate(post_elements):
             element_text = element.get('text', '')
             
-            if element.get('type') != 'toggle':
+            if element.get('type') != NOTION_BLOCK_TOGGLE:
                 continue
             
             print(f"[NotionRecipeParser] Found toggle: '{element_text}' - fetching children...")
@@ -103,7 +104,7 @@ class NotionRecipeParser:
             list: List of child elements, or empty list if none found
         """
         # Check if this is a toggle block
-        if toggle_element.get('type') != 'toggle':
+        if toggle_element.get('type') != NOTION_BLOCK_TOGGLE:
             print(f"[WARNING] Element is not a toggle, it's: {toggle_element.get('type')}")
             return []
         
