@@ -12,6 +12,7 @@ import time
 MAX_REQUESTS_PER_SECOND = 3.0
 MAX_RETRIES = 3
 RETRY_BACKOFF_BASE = 2  # seconds
+MAX_WORKERS = 3  # Maximum parallel workers for ThreadPoolExecutor
 
 
 class NotionTokenBucketRateLimiter:
