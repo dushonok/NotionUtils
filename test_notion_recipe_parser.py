@@ -160,9 +160,10 @@ class TestNotionRecipeParser(unittest.TestCase):
         
         toggle_element = {'type': 'toggle', 'id': 'toggle123'}
         
-        result = self.parser.get_toggle_children(toggle_element, 'page123')
+        with self.assertRaises(ValueError) as context:
+            self.parser.get_toggle_children(toggle_element, 'page123')
         
-        self.assertEqual(result, [])
+        self.assertIn("Could not retrieve toggle children", str(context.exception))
     
     def test_custom_callback(self):
         """Test that custom callback is used"""

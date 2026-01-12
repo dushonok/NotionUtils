@@ -130,10 +130,7 @@ class NotionRecipeParser:
         try:
             children_response = get_page_block_children(page_block_id=toggle_block_id)
             children = children_response.get('results', [])
-            
-            print(f"[DEBUG] Toggle has {len(children)} children")
             return children
             
         except Exception as e:
-            print(f"[ERROR] Failed to get toggle children: {e}")
-            return []
+            raise ValueError(f"Could not retrieve toggle children: {e}") from e
