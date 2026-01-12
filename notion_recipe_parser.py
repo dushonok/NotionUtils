@@ -72,6 +72,10 @@ class NotionRecipeParser:
         post_body = get_page_content(post_id)
         post_elements = get_page_content_blocks(post_body)
         post_parts = []
+
+        if not post_elements:
+            self.callback(f"[WARNING][NotionRecipeParser] No content blocks found in page ID: {post_id}")
+            return post_parts
         
         for idx, element in enumerate(post_elements):
             element_text = element.get('text', '')
@@ -79,7 +83,7 @@ class NotionRecipeParser:
             if element.get('type') != NOTION_BLOCK_TOGGLE:
                 continue
             
-            print(f"[NotionRecipeParser] Found toggle: '{element_text}' - fetching children...")
+            self.callback(f"[NotionRecipeParser] Found toggle: '{element_text}' - fetching children...")
             
             toggle_children = self.get_toggle_children(element, post_id)
             
@@ -87,7 +91,7 @@ class NotionRecipeParser:
                 child_type = child.get('type')
                 child_text = extract_text_from_block(child)
                 post_parts.append({'type': child_type, 'text': child_text})
-                print(f"[DEBUG]   Toggle child {j}: {{'type': '{child_type}', 'text': '{child_text}'}}")
+                self.callback(f"[DEBUG]   Toggle child {j}: {{'type': '{child_type}', 'text': '{child_text}'}}")
             break
         
         return post_parts
@@ -105,12 +109,12 @@ class NotionRecipeParser:
         """
         # Check if this is a toggle block
         if toggle_element.get('type') != NOTION_BLOCK_TOGGLE:
-            print(f"[WARNING] Element is not a toggle, it's: {toggle_element.get('type')}")
+            self.callback(f"[WARNING] Element is not a toggle, it's: {toggle_element.get('type')}")
             return []
         
-        print(f"[DEBUG] Full toggle element structure:")
-        print(f"[DEBUG]     Keys: {list(toggle_element.keys())}")
-        print(f"[DEBUG]     Full element: {toggle_element}")
+        self.callback(f"[DEBUG] Full toggle element structure:")
+        self.callback(f"[DEBUG]     Keys: {list(toggle_element.keys())}")
+        self.callback(f"[DEBUG]     Full element: {toggle_element}")
         
         # Get the toggle block ID
         toggle_block_id = (
@@ -119,7 +123,7 @@ class NotionRecipeParser:
             toggle_element.get('raw_block', {}).get('id')  # From raw block
         )
         if not toggle_block_id:
-            print("[ERROR] Toggle block has no ID")
+            self.callback("[ERROR] Toggle block has no ID")
             return []
         
         # Fetch children of the toggle block
