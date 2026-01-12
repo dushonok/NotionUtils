@@ -1,0 +1,13 @@
+name: tests
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  pytest:
+    uses: dushonok/GHSharedWorkflows/.github/workflows/python-pytest.yml@main
+    with:
+      python-version: "3.13"
+      requirements-file: "requirements.txt"
+      pytest-args: ""
